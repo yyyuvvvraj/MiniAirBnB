@@ -9,14 +9,14 @@ const listingSchema=new Schema({
     image: {
     filename: { type: String, default: "listingimage" },
     url: {
-      type: String,
-      default:
-        "https://unsplash.com/photos/snowy-mountain-peak-peeks-through-the-clouds-LTIrGbdmCgk",
-      set: (v) =>
-        v === ""
-          ? "https://unsplash.com/photos/snowy-mountain-peak-peeks-through-the-clouds-LTIrGbdmCgk"
-          : v,
-    }},
+  type: String,
+  default:
+    "https://vumo.co.uk/wp-content/uploads/2022/11/getty-images-kZat9Gzg5Uk-unsplash.jpg",
+  set: (v) =>
+    v === ""
+      ? "https://vumo.co.uk/wp-content/uploads/2022/11/getty-images-kZat9Gzg5Uk-unsplash.jpg"
+      : v,
+}},
     price:Number,
     location:String,
     country:String,

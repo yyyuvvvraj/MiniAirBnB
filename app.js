@@ -48,6 +48,14 @@ app.get("/listings/:id",async (req,res)=>{
     res.render("listings/show.ejs",{listing});
 });
 
+function normalizeImageUrl(listingData) {
+  if (listingData.image && listingData.image.url === "") {
+    listingData.image.url = undefined;
+  }
+  return listingData;
+}
+
+
 //Create Route
 app.post("/listings",async (req,res)=>{
     const newListing = new Listing(req.body.listing);
