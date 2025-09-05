@@ -6,6 +6,7 @@ const path=require("path");
 const { title } = require("process");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
+const wrapSync=require("/utils/wrapAsync.js");
 
 const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
 
@@ -57,11 +58,12 @@ function normalizeImageUrl(listingData) {
 
 
 //Create Route
-app.post("/listings",async (req,res)=>{
+app.post("/listings",wrapAsync(async (req,res,next)=>{
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
-});
+})
+);
 
 //Edit Route
 app.get("/listings/:id/edit",async (req,res)=>{
@@ -85,7 +87,13 @@ app.delete("/listings/:id",async (req,res)=>{
     res.redirect("/listings");
 });
 
+app.use((err,req,res,next)=>{
+    res.send("Something went wrong!");
+})
 
+app.listen(8080,()=>{
+    console.log("Server is running on port 8080")
+})
 // app.get("/testlisting",async (req,res)=>{
 //     let sampleListing=new Listing({
 //         title:"My New Villa",
@@ -99,6 +107,4 @@ app.delete("/listings/:id",async (req,res)=>{
 //     res.send("Successfully added a new listing");
 // });
 
-app.listen(8080,()=>{
-    console.log("Server is running on port 8080");
-});
+ 
