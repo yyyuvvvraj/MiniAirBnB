@@ -2,20 +2,20 @@
 <div class="row mt-3">
     <div class="col-8 offset-2">
      <h3>Edit Your Listing</h3>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+     <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" value="<%= listing.title%>" type="text" class="form-control" required>
+            <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
             <div class="invalid-feedback">Please enter the title!</div>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" type="text" class="form-control" required><%= listing.description %></textarea>
+            <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
             <div class="invalid-feedback">Please enter a short description!</div>
         </div>
         <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input name="listing[image][url]" value="<%= listing.image.url %>" class="form-control" required>
+            <label for="image" class="form-label">Image URL</label>
+            <input name="listing[image][url]" value="<%= listing.image?.url || '' %>" class="form-control" required>
             <div class="invalid-feedback">Please enter valid url!</div>
         </div>
         <div class="row">
@@ -40,4 +40,3 @@
     </form>
     </div> 
 </div>
-<script src="/js/script.js"></script>
