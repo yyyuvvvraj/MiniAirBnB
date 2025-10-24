@@ -100,7 +100,8 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
     res.redirect("/listings");
 }));
 
-// REVIEW Post Route
+// REVIEW 
+// Post Route
 app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res, next) => {
     let listing = await Listing.findById(req.params.id);
     if (!listing) throw new ExpressError(404, "Listing not found");
@@ -110,6 +111,16 @@ app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res, nex
     await listing.save();
     res.redirect(`/listings/${req.params.id}`);
 }));
+
+//Delete Route
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req,res)=> {
+    let { id, reviewId } = req.params;
+
+    await Listing.findByIdAndUpdate(id, {$pull : {reviews:reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
+}))
 
 // 404 Error Handler
 app.use((req, res, next) => {
