@@ -1,27 +1,71 @@
 <% layout("/layouts/boilerplate") -%>
 <div class="row">
-    <div class="col-8 offset-3">
-    <h3 class=>Listing Details :</h3>
+  <div class="col-8 offset-3">
+    <h3><%= listing.title %></h3>
+  </div>
+  <div class="card col-6 offset-3 show-card">
+    <% if (listing.image && listing.image.url) { %>
+      <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+    <% } else { %>
+      <div class="card-img-top show-img d-flex align-items-center justify-content-center" style="height:200px;">
+        <small>No image available</small>
+      </div>
+    <% } %>
+    <div class="card-body">
+      <p class="card-text">
+        <%= listing.description %> <br>
+        &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <br>
+        <%= listing.location %> <br>
+        <%= listing.country %> <br>
+      </p>
     </div>
-
-    <div class="card col-6 offset-3 show-card">
-         <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
-        <div class="card-body">
-            <p class="card-text">
-            <b><%= listing.title %> </b> <br>
-                <%= listing.description %> <br>
-                &#8377;<%= listing.price.toLocaleString("en-IN") %> <br>
-                <%= listing.location %> <br>
-                <%= listing.country %> <br>
-            </p>
-        </div>
-    </div>
-    <br>  
-    </div>
-    <div class="btns">
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
-        <form method="POST" action="/listings/<%= listing._id %>?_method=Delete">
-        
-        <button class="btn btn-dark offset-5 delete-btn">Delete</button>
+  </div>
+  <div class="btns mt-3">
+    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display:inline-block;">
+      <button class="btn btn-dark offset-5 delete-btn">Delete</button>
     </form>
+  </div>
+  <hr>
+  <div class="col-8 offset-3 mb-3">
+    <h4>Leave a Review</h4>
+    <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+      </div>
+      <div class="mb-3 mt-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+        <div class="invalid-feedback">Please submit comments for review</div>
+      </div>
+      <button class="btn btn-outline-dark">Submit</button>
+    </form>
+  </div>
+  <div class="col-10 offset-1 mt-4">
+  <h4>Reviews :</h4>
+  <% if (listing.reviews && listing.reviews.length > 0) { %>
+    <div class="row row-cols-1 row-cols-md-2 g-4"> 
+      <% listing.reviews.forEach(function(review) { %>
+        <div class="col">
+          <div class="card shadow-sm border-0 p-3 mb-3 bg-light">
+            <div class="card-header bg-dark text-white">
+              <h6 class="mb-0">Rating: <%= review.rating %> / 5</h6>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><%= review.comment %></p>
+              <hr>
+              <p class="text-muted mb-1"><small>
+                Posted by: 
+                <span class="fw-bold"><%= review.user ? review.user.username : "AirBnB" %></span>
+              </small></p>
+              <small class="text-secondary">On <%= review.createdAt.toLocaleString() %></small>
+            </div>
+          </div>
+        </div>
+      <% }) %>
     </div>
+  <% } else { %>
+    <i>No reviews yet.</i>
+  <% } %>
+</div>
