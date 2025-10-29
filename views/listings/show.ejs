@@ -13,7 +13,7 @@
     <% } %>
     <div class="card-body">
       <p class="card-text">
-        <i>Username:- <%= listing.owner.username %> </i> 
+        <i>Owned by:- <%= listing.owner.username %> </i> 
         <br>
         </p>
         <p class="card-text"></p><%= listing.description %> <br>
@@ -22,6 +22,7 @@
         <p class="card-text"><%= listing.country %> <br></p>
     </div>
   </div>
+  <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
   <div class="btns mt-3">
     <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
     <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display:inline-block;">
@@ -29,6 +30,9 @@
     </form>
   </div>
   <hr>
+  <% } %>
+
+  <% if(currUser){%>
   <div class="col-8 offset-3 mb-3">
     <h4>Leave a Review</h4>
     <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
@@ -44,6 +48,7 @@
       <button class="btn btn-outline-dark">Submit</button>
     </form>
   </div>
+  <%}%>
   <div class="col-10 offset-1 mt-4">
   <h4>Reviews :</h4>
   <% if (listing.reviews && listing.reviews.length > 0) { %>
@@ -59,7 +64,14 @@
               <hr>
               <p class="text-muted mb-1"><small>
                 Posted by: 
-                <span class="fw-bold"><%= review.user ? review.user.username : "AirBnB" %></span>
+                <span class="fw-bold">
+  <% if (review.author) { %>
+    <%= review.author.username %>
+  <% } else { %>
+    (Deleted User)
+  <% } %>
+</span>
+
               </small></p>
               <small class="text-secondary">On <%= review.createdAt.toLocaleString() %></small>
             </div>
