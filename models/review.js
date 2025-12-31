@@ -14,8 +14,8 @@ const reviewSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: "User", // 👈 this line is the key
+    ref: "User", 
   }
-}, { timestamps: true }); // optional, gives createdAt/updatedAt
+}, { timestamps: true }); 
 
 module.exports = mongoose.model("Review", reviewSchema);
