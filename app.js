@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 // app.js
 const express = require("express");
 const app = express();
@@ -36,8 +39,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // in case you accept JSON somewhere
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
-
-
 
 // --- session / flash ---
 const sessionOptions = {
@@ -78,7 +79,6 @@ app.use("/listings/:id/reviews", reviewRouter);
 
 // Listing Routes (less specific)
 app.use("/listings", listingRouter);
-
 
 // Root route (optional)
 app.get("/", (req, res) => {
