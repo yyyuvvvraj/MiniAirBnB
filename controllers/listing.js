@@ -51,17 +51,26 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.updateListing = async (req, res) => {
-  let { id } = req.params;
-  const listing = await Listing.findById(id);
-  if (!listing) throw new ExpressError(404, "Listing not found");
+  const { id } = req.params;
 
-  let updatedListing = req.body.listing || {};
+  // 1️⃣ Update text fields
+  let listing = await Listing.findByIdAndUpdate(
+    id,
+    { ...req.body.listing }, // 🔥 THIS WAS MISSING
+    {
+      runValidators: true,
+      new: true, // returns updated document
+    }
+  );
 
-  if (updatedListing.image && !updatedListing.image.filename) {
-    updatedListing.image.filename = listing.image.filename;
+  // 2️⃣ Update image ONLY if a new one is uploaded
+  if (req.file) {
+    const url = req.file.path;
+    const filename = req.file.filename;
+    listing.image = { url, filename };
+    await listing.save();
   }
 
-  await Listing.findByIdAndUpdate(id, updatedListing, { runValidators: true });
   req.flash("success", "Successfully updated the listing!");
   res.redirect(`/listings/${id}`);
 };
