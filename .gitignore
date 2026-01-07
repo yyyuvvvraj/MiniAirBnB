@@ -1,1 +1,52 @@
+# =========================
+# Node dependencies
+# =========================
+node_modules/
+
+# =========================
+# Environment variables (VERY IMPORTANT)
+# =========================
 .env
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# =========================
+# OS / Editor files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Uploads / user-generated content
+# =========================
+uploads/
+cloudinary/
+tmp/
+
+# =========================
+# Build / cache folders
+# =========================
+dist/
+build/
+.cache/
+
+# =========================
+# Coverage / testing
+# =========================
+coverage/
+
+# =========================
+# Mapbox / API tokens (if stored separately)
+# =========================
+.env.local
+.env.development
+.env.production
